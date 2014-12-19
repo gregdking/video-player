@@ -1,13 +1,35 @@
+class Movie
+
+  constructor: (@name, @src) ->
+
+class MovieService
+
+  constructor: ->
+    @url = 'movies/database.json'
+
+  getAll: ->
+    dfd = $.Deferred()
+    $.get(@url)
+      .done(@getAll_done.bind this, dfd)
+      .fail(console.log)
+    dfd.promise()
+
+  getAll_done: (dfd, data) ->
+    movies = data.movies.map (movie) -> new Movie movie.name, movie.src
+    dfd.resolve movies
+
 class ViewModel
 
   constructor: ->
+    @service = new MovieService
     @applicationTitle = ko.observable 'CoffeeScript Video Player'
-    @videos = ko.observableArray [
-      { name: 'Incredibles', src: 'movies/Incredibles (2004).mp4' }
-      { name: 'Ratatouille', src: 'movies/Ratatouille (2007).mp4' }
-      { name: 'Toy Story', src: 'movies/Toy Story (1995).mp4' }
-    ]
-    @selectedVideo = ko.observable @videos()[0]
+    @videos = ko.observableArray()
+    @selectedVideo = ko.observable()
+
+  initialize: ->
+    @service.getAll().done (movies) =>
+      @videos movies
+      @selectedVideo @videos()[0]
 
   isSelected: (video) -> video is @selectedVideo()
 
@@ -16,3 +38,4 @@ class ViewModel
 $ ->
   vm = new ViewModel
   ko.applyBindings vm
+  vm.initialize()
