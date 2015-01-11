@@ -4,36 +4,32 @@ define(function (require) {
     var m = require('mithril'),
         h = require('html-tags');
 
-    function panel(children) {
-        return m('.panel.panel-default', children);
+    function panel(attrs, children) {
+        return m('.panel.panel-default', attrs, children);
     }
 
-    function panelHeading(caption) {
-        return m('.panel-heading', h.propertyValue(caption));
+    function panelHeading(attrs, children) {
+        return m('.panel-heading', attrs, children);
     }
 
-    function panelBody(children) {
-        return m('.panel-body.container', children);
+    function panelBody(attrs, children) {
+        return m('.panel-body.container', attrs, children);
     }
 
-    function layoutRow(children) {
-        return m('.row', children);
+    function layoutRow(attrs, children) {
+        return m('.row', attrs, children);
     }
 
-    function divListGroup(children) {
-        return m('.list-group', children);
+    function divListGroup(attrs, children) {
+        return m('.list-group', attrs, children);
     }
 
     function aListGroupItem(href, caption, isActive, onclick) {
-        isActive = isActive || false;
         var anchor = m('a.list-group-item', {
             href: h.propertyValue(href),
-            class: h.propertyValue(isActive) ? 'active' : ''
+            class: h.propertyValue(isActive || false) ? 'active' : '',
+            onclick: onclick
         }, h.propertyValue(caption));
-
-        if (onclick) {
-            anchor.attrs.onclick = onclick;
-        }
 
         return anchor;
     }

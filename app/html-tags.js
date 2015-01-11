@@ -5,7 +5,7 @@ define(function (require) {
         _ = require('lodash');
 
 
-    function video(width, height, src) {
+    function video(src, width, height) {
         return  m('video[controls]', {
             width: propertyValue(width),
             height: propertyValue(height),
