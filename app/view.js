@@ -2,6 +2,7 @@ define(function (require) {
     "use strict";
 
     var m = require('mithril'),
+        mx = require('mithril-ext'),
         h = require('html-tags'),
         b = require('bootstrap-tags');
 
@@ -14,10 +15,10 @@ define(function (require) {
             b.panelBody([
                 b.layoutRow([
                     videoList([
-                        vm.videos().map(videoListItem.bind(null, vm))
+                        mx.map(vm.videos, videoListItem.bind(null, vm), noVideosInDatabase)
                     ]),
                     videoPlayer([
-                        h.video(vm.selectedVideo().src, VIDEO_WIDTH, VIDEO_HEIGHT)
+                        mx.exists(vm.selectedVideo, video, noVideoSelected)
                     ])
                 ])
             ])
@@ -29,14 +30,25 @@ define(function (require) {
     }
 
     function videoListItem(vm, video) {
-        var caption = video.name,
-            isSelected = vm.isSelected(video),
+        var isSelected = vm.isSelected(video),
             onclick = vm.selectedVideo.bind(vm, video);
-        return b.aListGroupItem('#', caption, isSelected, onclick);
+        return b.aListGroupItem('#', video.name, isSelected, onclick);
     }
 
     function videoPlayer(children) {
         return m('.col-lg-8.well.text-center', children);
+    }
+
+    function video(selectedVideo) {
+        return h.video(selectedVideo.src, VIDEO_WIDTH, VIDEO_HEIGHT);
+    }
+
+    function noVideosInDatabase() {
+        return m('.list-group-item.text-center', 'No Videos in Database');
+    }
+
+    function noVideoSelected() {
+        return m('div', 'No Video Selected');
     }
 
     return view;
