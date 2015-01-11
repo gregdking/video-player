@@ -2,7 +2,7 @@ define(function (require) {
     "use strict";
 
     var m = require('mithril'),
-        h = require('html-tags');
+        mx = require('mithril-ext');
 
     function panel(attrs, children) {
         return m('.panel.panel-default', attrs, children);
@@ -26,10 +26,10 @@ define(function (require) {
 
     function aListGroupItem(href, caption, isActive, onclick) {
         var anchor = m('a.list-group-item', {
-            href: h.propertyValue(href),
-            class: h.propertyValue(isActive || false) ? 'active' : '',
+            href: mx.value(href),
+            class: mx.value(isActive || false) ? 'active' : '',
             onclick: onclick
-        }, h.propertyValue(caption));
+        }, mx.value(caption));
 
         return anchor;
     }

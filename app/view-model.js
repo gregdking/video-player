@@ -1,16 +1,18 @@
 define(function (require) {
     "use strict";
 
-    var m = require('mithril');
+    var m = require('mithril'),
+        Video = require('video');
 
     function ViewModel (){
         this.title = m.prop('Video Player');
         this.videos = m.prop([
-            { name: 'Incredibles', src: 'movies/Incredibles (2004).mp4' },
-            { name: 'Ratatouille', src: 'movies/Ratatouille (2007).mp4' },
-            { name: 'Toy Story', src: 'movies/Toy Story (1995).mp4' }
+            new Video('Incredibles', 'movies/Incredibles (2004).mp4'),
+            new Video('Ratatouille', 'movies/Ratatouille (2007).mp4'),
+            new Video('Toy Story', 'movies/Toy Story (1995).mp4')
         ]);
-        this.selectedVideo = m.prop(this.videos()[0]);
+        //this.videos([]);
+        this.selectedVideo = m.prop(null);
     }
 
     ViewModel.prototype.isSelected = function isSelected(video) {
