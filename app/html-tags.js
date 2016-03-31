@@ -4,6 +4,14 @@ define(function (require) {
     var m = require('mithril'),
         mx = require('mithril-ext');
 
+    function a(attrs, children) {
+        return m('a', attrs, children);
+    }
+
+    function li(attrs, children) {
+        return m('li', attrs, children);
+    }
+
     function video(src, width, height) {
         return  m('video[controls]', {
             width: mx.value(width),
@@ -13,6 +21,8 @@ define(function (require) {
     }
 
     return {
+        a: a,
+        li: li,
         video: video
     }
 });

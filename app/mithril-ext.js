@@ -30,6 +30,10 @@ define(function (require) {
         }
     }
 
+    function sequence(context) {
+        return _(arguments).toArray().rest().flow().bind(context);
+    }
+
     function value(property) {
         return _.isFunction(property) ? property() : property;
     }

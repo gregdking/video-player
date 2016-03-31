@@ -4,14 +4,15 @@ define(function (require) {
     var m = require('mithril'),
         mx = require('mithril-ext'),
         h = require('html-tags'),
-        b = require('bootstrap-tags');
+        b = require('bootstrap-tags'),
+        menu = require('menu');
 
     var VIDEO_WIDTH = 640,
         VIDEO_HEIGHT = 480;
 
     function view(vm) {
         return b.panel([
-            b.panelHeading(vm.title()),
+            menu(vm.menuVM),
             b.panelBody([
                 b.layoutRow([
                     videoList([

@@ -2,9 +2,11 @@ define(function (require) {
     "use strict";
 
     var m = require('mithril'),
-        Video = require('video');
+        Video = require('video'),
+        MenuViewModel = require('menu-view-model');
 
     function ViewModel (){
+        this.menuVM = new MenuViewModel(this);
         this.title = m.prop('Video Player');
         this.videos = m.prop([
             new Video('Incredibles', 'movies/Incredibles (2004).mp4'),
