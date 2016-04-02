@@ -1,57 +1,52 @@
-var ViewModel = (function () {
-    "use strict";
+'use strict';
 
-    function ViewModel (){
-        this.applicationTitle = m.prop('Video Player');
-        this.videos = m.prop([
-            { name: 'Incredibles', src: 'movies/Incredibles (2004).mp4' },
-            { name: 'Ratatouille', src: 'movies/Ratatouille (2007).mp4' },
-            { name: 'Toy Story', src: 'movies/Toy Story (1995).mp4' }
-        ]);
-        this.selectedVideo = m.prop(this.videos()[0]);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    return b;
+};
+
+var Timer = (function () {
+    function Timer(props) {
+        base.call(this, props);
+        this.interval = null;
+        this.state = {
+            secondsElapsed: 0
+        };
+        this.tick = this.tick.bind(this);
     }
+    var base = __extends(Timer, React.Component);
 
-    ViewModel.prototype.isSelected = function isSelected(video) {
-       return video === this.selectedVideo();
+    var prototype = Timer.prototype;
+
+    prototype.tick = function () {
+        this.setState({
+            secondsElapsed: this.state.secondsElapsed + 1
+        });
     };
 
-    ViewModel.prototype.select = function select(video) {
-        this.selectedVideo(video);
+    prototype.componentDidMount = function() {
+        this.interval = setInterval(this.tick, 1000);
     };
 
-    return ViewModel;
+    prototype.componentWillUnmount = function() {
+        clearInterval(this.interval);
+    };
+
+    prototype.render = function () {
+        return React.createElement(
+            "div",
+            null,
+            "Seconds Elapsed: ",
+            this.state.secondsElapsed
+        );
+    };
+
+    return Timer;
 }());
 
-function Controller() {
-    this.vm = new ViewModel();
-}
+var timer = React.createElement(Timer, null),
+    root = document.querySelector('.root');
 
-function view(controller) {
-    var vm = controller.vm;
-    return m('.panel.panel-default', [
-        m('.panel-heading', vm.applicationTitle()),
-        m('.panel-body.container', [
-            m('.row', [
-                m('.video-list.col-lg-4', [
-                    m('.list-group', [
-                        vm.videos().map(function (video) {
-                            return m('a.list-group-item', {
-                                href: '#',
-                                class: vm.isSelected(video) ? 'active' : '',
-                                onclick: vm.selectedVideo.bind(vm, video)
-                            }, video.name)
-                        })
-                    ])
-                ]),
-                m('.video-player.col-lg-8.well.text-center', [
-                    m('video[width=648][height=480][controls]', { src: vm.selectedVideo().src })
-                ])
-            ])
-        ])
-    ]);
-}
-
-m.module(document.querySelector('.root'), {
-    controller: Controller,
-    view: view
-});
+ReactDOM.render(timer, root);
